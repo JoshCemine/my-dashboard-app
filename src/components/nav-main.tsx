@@ -1,7 +1,6 @@
 "use client"
 
 import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react"
-
 import { Button } from "@/components/ui/button"
 import {
   SidebarGroup,
@@ -10,6 +9,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { LucideIcon } from "lucide-react"
 
 export function NavMain({
   items,
@@ -17,9 +19,10 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon?: Icon
+    icon?: Icon | LucideIcon
   }[]
 }) {
+  const pathname = usePathname()
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -43,14 +46,20 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isActive =
+              pathname === item.url || pathname.startsWith(`${item.url}/`)
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title} isActive={isActive}>
+                  <Link href={item.url} aria-current={isActive ? "page" : undefined}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
