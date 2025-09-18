@@ -1,4 +1,5 @@
 import { auth } from "@/auth"
+import { NextResponse } from "next/server"
 
 export const config = {
     matcher: [
@@ -7,8 +8,10 @@ export const config = {
 }
 
 export default auth((req) => {
-    if (!req.auth && req.nextUrl.pathname !== "/login") {
-        const newUrl = new URL("/login", req.nextUrl.origin)
-        return Response.redirect(newUrl)
+    if (!req.auth && !req.nextUrl.pathname.startsWith("/login")) {
+        const url = req.nextUrl.clone()
+        url.pathname = "/login"
+        url.searchParams.set("callbackUrl", req.nextUrl.pathname)
+        return NextResponse.redirect(url)
     }
 })
