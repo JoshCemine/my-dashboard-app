@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import Google from "next-auth/providers/google"
 
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseUrl = process.env.SUPABASE_URL;
 if (!supabaseUrl) {
     throw new Error("Missing SUPABASE_URL environment variable");
 }
@@ -16,10 +16,7 @@ if (!supabaseSecret) {
 
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-    providers: [Google({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })],
+    providers: [Google],
     adapter: SupabaseAdapter({
         url: supabaseUrl,
         secret: supabaseSecret,

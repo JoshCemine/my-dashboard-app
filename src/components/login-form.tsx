@@ -15,6 +15,12 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  async function loginWithGoogle() {
+    "use server"
+    await signIn("google", { redirectTo: "/dashboard" })
+  }
+
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -53,10 +59,7 @@ export function LoginForm({
                   Login
                 </Button>
                 <Button variant="outline" className="w-full"
-                  onClick={async () => {
-                    "use server"
-                    await signIn("google")
-                  }}
+                  onClick={loginWithGoogle}
                 >
                   Login with Google
                 </Button>
