@@ -22,7 +22,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         secret: supabaseSecret,
     }),
     callbacks: {
-        async session({ session, user }) {
+        async session({ session, user }: any) {
             const signingSecret = process.env.SUPABASE_JWT_SECRET
             if (signingSecret) {
                 const payload = {
@@ -36,7 +36,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             }
             return session
         },
-        authorized: async ({ auth }) => {
+        authorized: async ({ auth }: any) => {
             return !!auth
         },
     },
